@@ -1,0 +1,1 @@
+from .filters.infraestructure.routes import filter_router

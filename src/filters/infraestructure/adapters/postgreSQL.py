@@ -14,7 +14,7 @@ class PostgreSQLFilter(FilterRepository):
             JOIN sensors s ON sr.sensor_id = s.sensor_id
             JOIN sensors_models sm ON s.sensor_model_id = sm.sensor_model_id
             WHERE s.filter_id = :filter_id
-              AND sr.recorded_at >= CURRENT_DATE - INTERVAL '11 days'
+              AND sr.recorded_at >= CURRENT_DATE - INTERVAL '7 days'
               AND sr.recorded_at < CURRENT_DATE
             GROUP BY sm.name_sensor, DATE(sr.recorded_at)
             ORDER BY day ASC, sm.name_sensor;

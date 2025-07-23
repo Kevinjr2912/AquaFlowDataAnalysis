@@ -14,5 +14,6 @@ class Config:
     SALT = os.getenv("SALT")
     HTTP_ONLY = os.getenv("HTTP_ONLY", "True") == "True"
     AVAILABLE_DOMAINS = os.getenv("AVAILABLE_DOMAINS")
+    VITE_WEATHER_API_KEY = os.getenv("VITE_WEATHER_API_KEY")
 
 config = Config()

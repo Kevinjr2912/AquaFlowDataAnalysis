@@ -1,0 +1,1 @@
+from .IWeather_service import WeatherService

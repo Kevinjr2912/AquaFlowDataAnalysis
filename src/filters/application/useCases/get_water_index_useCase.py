@@ -15,7 +15,7 @@ class GetWaterQualityIndexUseCase:
         self.interp_temp = f_interp_temp()
 
     async def execute(self, filter_id: str) -> List[WaterQualityIndexDTO]:
-        measurements: List[MeasurementDTO] = await self.filter_repository.get_water_quality_index_by_filter_id(filter_id=filter_id)
+        measurements: List[MeasurementDTO] = await self.filter_repository.get_measurements_last_10_days_by_filter_id(filter_id=filter_id)
 
         grouped_data = defaultdict(dict)
         for m in measurements:

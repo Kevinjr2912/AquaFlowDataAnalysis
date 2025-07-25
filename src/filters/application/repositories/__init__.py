@@ -1,1 +1,2 @@
 from .IWeather_repository import WeatherRepository
+from .ILinearRegression_repository import LinearRegressionRepository

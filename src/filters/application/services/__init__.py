@@ -1,1 +1,2 @@
 from .IWeather_service import WeatherService
+from .ILinearRegression_service import LinearRegressionService

@@ -1,2 +1,5 @@
 from .measurement_dto import MeasurementDTO
 from .water_quality_index_dto import WaterQualityIndexDTO
+from .filter_status_dto import FilterStatusDTO
+from .historical_status_filter_dto import HistoricalStatusFilterDTO
+from .filter_status_with_history_dto import FilterStatusWithHistoryDTO

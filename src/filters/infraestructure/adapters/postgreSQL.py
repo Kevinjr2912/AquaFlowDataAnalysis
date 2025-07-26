@@ -7,17 +7,40 @@ class PostgreSQLFilter(FilterRepository):
     async def get_measurements_last_10_days_by_filter_id(self, filter_id: str) -> List[MeasurementDTO]:
         query = """
             SELECT 
-              DATE(sr.recorded_at) AS day,
-              sm.name_sensor,
-              ROUND(AVG(sr.value), 2) AS average_value
-            FROM sensors_readings sr
-            JOIN sensors s ON sr.sensor_id = s.sensor_id
-            JOIN sensors_models sm ON s.sensor_model_id = sm.sensor_model_id
-            WHERE s.filter_id = :filter_id
-              AND sr.recorded_at >= CURRENT_DATE - INTERVAL '11 days'
-              AND sr.recorded_at < CURRENT_DATE
-            GROUP BY sm.name_sensor, DATE(sr.recorded_at)
-            ORDER BY day ASC, sm.name_sensor;
+              day,
+              name_sensor,
+              ROUND(AVG(value), 2) AS average_value
+            FROM (
+                SELECT 
+                  DATE(sr.recorded_at) AS day,
+                  sm.name_sensor,
+                  td.temp_delta AS value
+                FROM sensors_readings sr
+                JOIN sensors s ON sr.sensor_id = s.sensor_id
+                JOIN sensors_models sm ON s.sensor_model_id = sm.sensor_model_id
+                JOIN temp_deltas td ON td.sensor_reading_id = sr.sensor_reading_id
+                WHERE sm.name_sensor ILIKE '%Temperature%'
+                  AND s.filter_id = :filter_id
+                  AND sr.recorded_at >= CURRENT_DATE - INTERVAL '11 days'
+                  AND sr.recorded_at < CURRENT_DATE
+
+                UNION ALL
+
+                SELECT 
+                  DATE(sr.recorded_at) AS day,
+                  sm.name_sensor,
+                  sr.value AS value
+                FROM sensors_readings sr
+                JOIN sensors s ON sr.sensor_id = s.sensor_id
+                JOIN sensors_models sm ON s.sensor_model_id = sm.sensor_model_id
+                WHERE sm.name_sensor NOT ILIKE '%Temperature%'
+                  AND s.filter_id = :filter_id
+                  AND sr.recorded_at >= CURRENT_DATE - INTERVAL '11 days'
+                  AND sr.recorded_at < CURRENT_DATE
+            ) AS combined_data
+            GROUP BY day, name_sensor
+            ORDER BY day ASC, name_sensor;
+
         """
 
         rows = await database_conn.fetch_all(query=query, values={"filter_id": filter_id})

@@ -1,22 +1,19 @@
+
 from .adapters import PostgreSQLFilter
 from ..application import GetWaterQualityIndexUseCase, GetFilterStatusByIdUseCase
 from .controllers import GetWaterQualityIndexController, GetFilterStatusByIdController
-from .adapters import Weather, Regression
-from ..application.services import WeatherService, LinearRegressionService
+from .adapters import Regression
+from ..application.services import LinearRegressionService
 
 filter_repository = PostgreSQLFilter()
-
-weather_repository = Weather()
-weather_service = WeatherService(weather_repository=weather_repository)
 
 linear_regression_repository = Regression()
 linear_regression_service = LinearRegressionService(linear_regression=linear_regression_repository)
 
 # use cases
-get_water_quality_index_usecase = GetWaterQualityIndexUseCase(filter_repository=filter_repository, weather_service=weather_service)
+get_water_quality_index_usecase = GetWaterQualityIndexUseCase(filter_repository=filter_repository)
 get_filter_status_by_id_usecase = GetFilterStatusByIdUseCase(filter_repository=filter_repository, linear_regression=linear_regression_service)
 
 # controllers 
 get_water_quality_index_controller = GetWaterQualityIndexController(get_water_quality_index_usecase=get_water_quality_index_usecase)
 get_filter_status_by_id_controller = GetFilterStatusByIdController(get_filter_status_by_id_usecase=get_filter_status_by_id_usecase)
-

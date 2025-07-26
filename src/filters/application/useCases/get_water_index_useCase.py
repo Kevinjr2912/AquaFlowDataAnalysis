@@ -2,13 +2,11 @@ from typing import List
 from collections import defaultdict
 from ...domain import FilterRepository
 from ..dtos.output import MeasurementDTO, WaterQualityIndexDTO
-from ..services.IWeather_service import WeatherService
 from ....utils import f_interp_ph, f_interp_turb, f_interp_tds, f_interp_temp
 
 class GetWaterQualityIndexUseCase:
-    def __init__(self, filter_repository: FilterRepository, weather_service: WeatherService):
+    def __init__(self, filter_repository: FilterRepository):
         self.filter_repository = filter_repository
-        self.weather_service = weather_service
         self.interp_ph = f_interp_ph()
         self.interp_turb = f_interp_turb()
         self.interp_tds = f_interp_tds()
@@ -27,19 +25,18 @@ class GetWaterQualityIndexUseCase:
             ph_avg = sensors.get("Ph")
             turbidez_avg = sensors.get("Turbidity")
             tds_avg = sensors.get("TDS")
-            temp_sample_avg = sensors.get("Temperature")
-            temp_ambiente = await self.weather_service.execute('Suchiapa,MX')
-            delta_temp = temp_ambiente - temp_sample_avg
+            delta_temp_avg = sensors.get("Temperature")
+            print(delta_temp_avg)
 
             # print(f"Day: {day}, Ph: {ph_avg}, Turbidity: {turbidez_avg}, TDS: {tds_avg}, Temp: {temp_sample_avg}, DeltaTemp: {delta_temp}")
 
-            if None in (ph_avg, turbidez_avg, tds_avg, temp_sample_avg):
+            if None in (ph_avg, turbidez_avg, tds_avg, delta_temp_avg):
                 continue
 
             sub_ph = self.interp_ph(ph_avg)
             sub_turb = self.interp_turb(turbidez_avg)
             sub_tds = self.interp_tds(tds_avg)
-            sub_temp = self.interp_temp(delta_temp)
+            sub_temp = self.interp_temp(delta_temp_avg)
 
             
             # print(f"Interpolated values: ph={sub_ph}, turb={sub_turb}, tds={sub_tds}, temp={sub_temp}")

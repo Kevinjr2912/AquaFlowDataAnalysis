@@ -34,10 +34,12 @@ cd AquaFlowDataAnalysis
 ```
 
 ### 2. Crear un entorno virtual
-
+```bash
 python3 -m venv venv
 source venv/bin/activate  # Linux / Mac
 venv\Scripts\activate     # Windows
+```
+
 
 ### 3. Instalar dependencias
 ```bash
@@ -47,11 +49,13 @@ pip install -r requirements.txt
 ### 4. Configurar variables de entorno
 La API requiere las siguientes variables de entorno:
 
+```bash
 DB_HOST=tu_host
 DB_USER=tu_usuario
 DB_PASSWORD=tu_password
 DB_DATABASE=nombre_base_datos
 VITE_WEATHER_API_KEY=api_key_clima
+```
 
 ### 5. Ejecutar el servidor
 ```bash

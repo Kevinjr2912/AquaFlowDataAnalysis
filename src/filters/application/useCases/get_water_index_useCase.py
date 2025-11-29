@@ -26,7 +26,6 @@ class GetWaterQualityIndexUseCase:
             turbidez_avg = sensors.get("Turbidity")
             tds_avg = sensors.get("TDS")
             delta_temp_avg = sensors.get("Temperature")
-            print(delta_temp_avg)
 
             # print(f"Day: {day}, Ph: {ph_avg}, Turbidity: {turbidez_avg}, TDS: {tds_avg}, Temp: {temp_sample_avg}, DeltaTemp: {delta_temp}")
 
@@ -53,3 +52,6 @@ class GetWaterQualityIndexUseCase:
             results.append(WaterQualityIndexDTO(day=day, ica_value=round(ICA, 2)))
 
         return results
+
+    def __interpolate(parameter, fun):
+        

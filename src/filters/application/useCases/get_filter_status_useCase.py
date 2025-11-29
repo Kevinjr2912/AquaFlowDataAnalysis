@@ -5,7 +5,7 @@ from collections import defaultdict
 from typing import List
 from datetime import datetime
 
-class GetFilterStatusByIdUseCase:
+class GetFilterStatusByIdUseCase:a
   def __init__(self, filter_repository: FilterRepository, linear_regression: LinearRegressionService):
     self.filter_repository = filter_repository
     self.linear_regression = linear_regression

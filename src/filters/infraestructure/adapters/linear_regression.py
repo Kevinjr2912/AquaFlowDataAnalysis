@@ -6,7 +6,7 @@ import numpy as np
 
 class Regression(LinearRegressionRepository):
   async def get_probability_layer_change(self, historical_status: HistoricalStatusFilterDTO, current_effectiveness: float) -> FilterStatusDTO:
-    base_date = min(historical_status.days)
+    base_date = min(histaorical_status.days)
 
     X = np.array([(d - base_date).days for d in historical_status.days]).reshape(-1, 1)
     y = np.array(historical_status.effectiveness)
